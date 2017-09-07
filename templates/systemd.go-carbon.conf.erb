@@ -5,7 +5,7 @@ After=basic.target network.target
 
 [Service]
 Environment="GOMAXPROCS=<%= @go_maxprocs %>"
-ExecStart=<%= @executable %> --config <%= @config_dir %>/<%= @service_name %>.conf
+ExecStart=<%= @executable %> --config <%= scope['go_carbon::params::config_dir'] %>/<%= @service_name %>.conf
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
