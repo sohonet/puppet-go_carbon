@@ -1,15 +1,8 @@
-# == Class: go_carbon::params
 # == Description: Default parameters
 class go_carbon::params {
   $package_name                       = 'go-carbon'
-  $version                            = $::osfamily ? {
-    'RedHat' => '0.7-1.el6',
-    'Debian' => '0.7.1',
-  }
-  $executable                         = $::osfamily ? {
-    'RedHat' => '/usr/local/bin/go-carbon',
-    'Debian' => '/usr/sbin/go-carbon',
-  }
+  $version                            = '0.7.1'
+  $executable                         = '/usr/sbin/go-carbon'
   $config_dir                         = '/etc/go-carbon'
   $systemd_service_folder             = '/lib/systemd/system'
   $service_enable                     = true
@@ -87,8 +80,5 @@ class go_carbon::params {
   $pprof_enabled                      = false
   $download_package                   = false
   $download_deb_url                   = "https://github.com/lomik/go-carbon/releases/download/v${version}/go-carbon_${version}_amd64.deb"
-  $shell                              = $::osfamily ? {
-    'RedHat' => '/sbin/nologin',
-    'Debian' => '/usr/sbin/nologin',
-  }
+  $shell                              = '/usr/sbin/nologin'
 }
