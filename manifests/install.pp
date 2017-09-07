@@ -11,35 +11,15 @@ class go_carbon::install inherits go_carbon {
     shell  => $go_carbon::shell,
   }
 
-  case $::osfamily {
-    'Debian': {
-      if $go_carbon::download_package {
-        exec { 'download package from release':
-          command => "/usr/bin/curl -s -o /tmp/go-carbon_${go_carbon::version}_amd64.deb ${go_carbon::download_deb_url}",
-          cwd     => '/tmp',
-          unless  => "/usr/bin/apt show go-carbon=${go_carbon::version}",
-        } ~>
+  exec { 'download package from release':
+    command => "/usr/bin/curl -s -o /tmp/go-carbon_${go_carbon::version}_amd64.deb ${go_carbon::download_deb_url}",
+    cwd     => '/tmp',
+    unless  => "/usr/bin/apt show go-carbon=${go_carbon::version}",
+  } ~>
 
-        package { $go_carbon::package_name:
-          provider => dpkg,
-          source   => "/tmp/go-carbon_${go_carbon::version}_amd64.deb",
-        }
-      } else {
-        package { $go_carbon::package_name:
-          ensure => $go_carbon::version
-        }
-      }
-    }
-
-    'RedHat': {
-      package { $go_carbon::package_name:
-        ensure => $go_carbon::version
-      }
-    }
-
-    default: {
-      fail("Unable to install a go-carbon service on OS version ${::operatingsystemmajrelease}.")
-    }
+  package { $go_carbon::package_name:
+    provider => dpkg,
+    source   => "/tmp/go-carbon_${go_carbon::version}_amd64.deb",
   }
 
   # Create the go-carbon conf dir
